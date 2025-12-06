@@ -1,0 +1,16 @@
+services:
+  app:
+    build:
+      context: .
+      target: development
+      args:
+        USER_ID: $UID
+        GROUP_ID: $GID
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/var/www/html
+    command: ["php", "artisan", "octane:start", "--server=frankenphp", "--port=8080"]
+    healthcheck:
+      test: ["CMD", "healthcheck-octane"]
+      start_period: 10s
