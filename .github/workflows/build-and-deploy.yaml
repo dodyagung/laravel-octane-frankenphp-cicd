@@ -45,9 +45,9 @@ jobs:
           overrule_existing_kubeconfig: true
           exec: |
             helm upgrade ${{ github.event.repository.name }} helm-charts \
+              --atomic \
               --history-max 3 \
               --install \
-              --rollback-on-failure \
               --set-string image.tag=latest \
               --set-string env[0].name=APP_KEY --set env[0].value=${{ secrets.APP_KEY }} \
               --set-string podAnnotations.deployedAt=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
@@ -55,4 +55,4 @@ jobs:
               --set-string podAnnotations.projectBranch=${{ github.ref_name }} \
               --set-string podAnnotations.projectCommit=$(echo '${{ github.sha }}' | cut -c1-8) \
               --set-string podAnnotations.projectPath=${{ github.repository }} \
-              --wait=watcher
+              --wait
